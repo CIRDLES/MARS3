@@ -42,13 +42,13 @@ export function fetchUsercode(username, password) {
     .then(responseText => x2js.xml2js(responseText))
     .then(
       function(responseJS){
-        if(responseJS.user_codes) {
+        if(responseJS.results.user_codes) {
           dispatch(fetchUsercodeSuccess(responseJS.results.user_codes.user_code))
         } else {
-          dispatch(fetchUsercodeFailure(responseJS.results.error));
+          dispatch(fetchUsercodeFailure(responseJS.results.error))
         }
       }
     )
-    .catch(response => dispatch(fetchUsercodeFailure("Request Error")))
+    .catch(response => dispatch(fetchUsercodeFailure(response.status)))
   }
 }
