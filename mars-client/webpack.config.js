@@ -2,7 +2,7 @@ var path = require('path');
 
 module.exports = {
   entry: {
-    app: "./src/index.jsx"
+    app: "./src/index.js"
   },
   resolve: {
     extensions: ['', '.js', '.jsx']
