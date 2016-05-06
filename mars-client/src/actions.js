@@ -8,6 +8,11 @@ export const FETCH_USERCODE_REQUEST = 'FETCH_USERCODE_REQUEST'
 export const FETCH_USERCODE_SUCCESS = 'FETCH_USERCODE_SUCCESS'
 export const FETCH_USERCODE_FAILURE = 'FETCH_USERCODE_FAILURE'
 
+// Async sample posting actions
+export const POST_SAMPLES_REQUEST = 'POST_SAMPLES_REQUEST'
+export const POST_SAMPLES_SUCCESS = 'POST_SAMPLES_SUCCESS'
+export const POST_SAMPLES_FAILURE = 'POST_SAMPLES_FAILURE'
+
 export function fetchUsercodeRequest() {
   return {
     type: FETCH_USERCODE_REQUEST
