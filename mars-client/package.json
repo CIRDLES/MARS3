@@ -27,6 +27,7 @@
     "webpack-dev-server": "^1.14.1"
   },
   "dependencies": {
+    "d3": "^3.5.17",
     "x2js": "^2.0.1"
   }
 }

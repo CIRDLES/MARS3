@@ -19,17 +19,17 @@ export function fetchUsercodeRequest() {
   }
 }
 
-export function fetchUsercodeSuccess(data) {
+export function fetchUsercodeSuccess(usercode) {
   return {
     type: FETCH_USERCODE_SUCCESS,
-    data
+    usercode
   }
 }
 
-export function fetchUsercodeFailure(data) {
+export function fetchUsercodeFailure(error) {
   return {
     type: FETCH_USERCODE_FAILURE,
-    data
+    error
   }
 }
 
@@ -45,8 +45,7 @@ export function fetchUsercode(username, password) {
     })
     .then(response => response.text())
     .then(responseText => x2js.xml2js(responseText))
-    .then(
-      function(responseJS){
+    .then(responseJS => {
         if(responseJS.results.user_codes) {
           dispatch(fetchUsercodeSuccess(responseJS.results.user_codes.user_code))
         } else {
@@ -55,5 +54,56 @@ export function fetchUsercode(username, password) {
       }
     )
     .catch(response => dispatch(fetchUsercodeFailure(response.status)))
+  }
+}
+
+export function postSamplesRequest() {
+  return {
+    type: POST_SAMPLES_REQUEST
+  }
+}
+
+export function postSamplesSuccess(data) {
+  return {
+    type: POST_SAMPLES_SUCCESS,
+    data
+  }
+}
+
+export function postSamplesFailure(errors) {
+  return {
+    type: POST_SAMPLES_FAILURE,
+    errors
+  }
+}
+
+
+export function postSamples(username, password, data) {
+  return dispatch => {
+    var postData = new FormData();
+    postData.append("username", username);
+    postData.append("password", password);
+    postData.append("content", x2js.js2xml(data));
+    dispatch(postSamplesRequest());
+    return fetch('https://sesardev.geosamples.org/webservices/upload.php', {
+      method: "POST",
+      body: postData
+    })
+    .then(response => {
+      var decoder = new TextDecoder();
+      var reader = response.body.getReader();
+      reader.read()
+      .then(function(result) {
+          return decoder.decode(result.value, {stream: true})
+      })
+      .then(responseText => x2js.xml2js(responseText))
+      .then(responseJS => {
+        if(response.status === 200) {
+          dispatch(postSamplesSuccess(responseJS))
+        } else {
+          dispatch(postSamplesFailure(responseJS))
+        }
+      })
+    })
   }
 }
